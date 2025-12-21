@@ -43,3 +43,67 @@ console.log(longerString);
 // console.log(notOK);
 
 //* Working w/ Contrained Values *\\
+// const minimumLength = <T extends { length: number }>(
+//   obj: T,
+//   minimum: number
+// ): T => {
+//   if (obj.length >= minimum) {
+//     return obj;
+//   } else {
+//     return { length: minimum };
+//   }
+// };
+
+// 'arr' gets value { length: 6 }
+// const arr = minimumLength([1, 2, 3], 6);
+// console.log(arr.slice(0));
+
+//* Specifying Type Arguments *\\
+const combine = <T>(arr1: T[], arr2: T[]): T[] => {
+  return arr1.concat(arr2);
+};
+
+const arr = combine<string | number>([1, 2, 3], ['hello']);
+
+//* Guidelines for Writing Good Generic Functions *\\
+
+// Pushing Type Parameters Down
+const firstElementOne = <T>(arr: T[]) => {
+  return arr[0];
+};
+
+const firstElementTwo = <T extends any[]>(arr: T) => {
+  return arr[0];
+};
+
+// a: number (good)
+const a = firstElementOne([1, 2, 3]);
+// b: any (bad)
+const b = firstElementTwo([1, 2, 3]);
+
+// Use Fewer Type Parameters
+const filter1 = <T>(arr: T[], func: (arg: T) => boolean): T[] => {
+  return arr.filter(func);
+};
+
+const filter2 = <T, Func extends (arg: T) => boolean>(
+  arr: T[],
+  func: Func
+): T[] => {
+  return arr.filter(func);
+};
+
+// Type Parameters Should Appear Twice
+const greet = <Str extends string>(s: Str) => {
+  console.log('Hello, ' + s);
+};
+
+greet('world');
+
+const greetPlain = (s: string) => {
+  console.log('Hello, ' + s);
+};
+
+greetPlain('Pornoville');
+
+//***> Optional Parameters <***\\
